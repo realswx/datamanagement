@@ -5,6 +5,7 @@ import com.dm.form.UserLoginForm;
 import com.dm.pojo.User;
 import com.dm.service.IUserService;
 import com.dm.vo.ResponseVo;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+
+import static com.dm.consts.DMConst.CURRENT_USER;
 
 @RestController
 @Slf4j
@@ -56,7 +59,7 @@ public class UserController {
 
         ResponseVo<User> userResponseVo = userService.login(userLoginForm.getUsername(), userLoginForm.getPassword());
         //设置Session
-        session.setAttribute(DMConst.CURRENT_USER, userResponseVo.getData());
+        session.setAttribute(CURRENT_USER, userResponseVo.getData());
         log.info("/user/login sessionId={}", session.getId());
 
         return userResponseVo;
@@ -72,7 +75,7 @@ public class UserController {
     @GetMapping("/info")
     public ResponseVo<User> userInfo(HttpSession session){
         log.info("/user/info sessionId={}", session.getId());
-        User user = (User) session.getAttribute(DMConst.CURRENT_USER);
+        User user = (User) session.getAttribute(CURRENT_USER);
         //已经通过拦截器判断登录状态
 //        if (user == null) { //未登录情况下
 //            return ResponseVo.error(ResponseEnum.NEED_LOGIN);
@@ -96,11 +99,28 @@ public class UserController {
 //        }
 
         //移除session，退出登录
-        session.removeAttribute(DMConst.CURRENT_USER);
+        session.removeAttribute(CURRENT_USER);
 
         return ResponseVo.success();
 
     }
+
+
+    /**
+     * 查询除登录用户外的所有系统用户
+     * @param pageNum
+     * @param pageSize
+     * @param session
+     * @return
+     */
+    @GetMapping("/list")
+    public ResponseVo<PageInfo> list(@RequestParam(required = false, defaultValue = "1") Integer pageNum,
+                                     @RequestParam(required = false, defaultValue = "10") Integer pageSize,
+                                     HttpSession session) {
+        User user = (User) session.getAttribute(CURRENT_USER);
+        return userService.list(user.getId(), pageNum, pageSize);
+    }
+
 
 
 

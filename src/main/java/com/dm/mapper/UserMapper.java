@@ -16,6 +16,11 @@ public interface UserMapper {
     //登录时，判断用户是否存在
     User selectByUsername(String username);
 
+    /**
+     * 查询商品列表
+     */
+    List<User> selectAll(Integer id);
+
 
     int deleteByPrimaryKey(Integer id);
 

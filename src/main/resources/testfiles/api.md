@@ -36,6 +36,8 @@ success
 }
 ```
 
+注：防止密码泄露，故意将密码设置为空
+
 fail
 
 ```json
@@ -73,6 +75,8 @@ success
 }
 ```
 
+注：防止密码泄露，故意将密码设置为空
+
 fail
 
 ```json
@@ -109,6 +113,73 @@ fail
     "msg": "服务端异常"
 }
 ```
+
+## 4、查询用户列表
+
+注：显示除自己外的所有系统用户
+
+GET  /user/list
+
+### request
+
+```json
+Integer pageNum(defaultValue=1);
+Integet pageSize(defaultValue=10);
+HttpSession session;
+前两个参数非必传
+session不要传，不必理会
+```
+
+### response
+
+success
+
+```json
+{
+    "status": 0,
+    "data": {
+        "total": 2,
+        "list": [
+            {
+                "id": 2,
+                "username": "admin2",
+                "password": "",
+                "email": "admin2@dms.com",
+                "roleStr": "管理员",
+                "birthday": "1990-06-14T15:00:00.000+0000"
+            },
+            {
+                "id": 3,
+                "username": "张一",
+                "password": "",
+                "email": "zhang1@dms.com",
+                "roleStr": "普通用户",
+                "birthday": "1997-03-23T16:00:00.000+0000"
+            }
+        ],
+        "pageNum": 1,
+        "pageSize": 2,
+        "size": 2,
+        "startRow": 1,
+        "endRow": 2,
+        "pages": 1,
+        "prePage": 0,
+        "nextPage": 0,
+        "isFirstPage": true,
+        "isLastPage": true,
+        "hasPreviousPage": false,
+        "hasNextPage": false,
+        "navigatePages": 8,
+        "navigatepageNums": [
+            1
+        ],
+        "navigateFirstPage": 1,
+        "navigateLastPage": 1
+    }
+}
+```
+
+注：防止密码泄露，故意将密码设置为空
 
 
 

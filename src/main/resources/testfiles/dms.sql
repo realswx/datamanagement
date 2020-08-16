@@ -7,7 +7,7 @@ CREATE TABLE `dms_user` (
   `username` varchar(50) NOT NULL COMMENT '用户名',
   `password` varchar(100) NOT NULL COMMENT '密码，MD5加密',
   `email` varchar(50) NOT NULL,
-  `role` tinyint(1) NOT NULL DEFAULT '1' COMMENT '角色1-管理员,0-普通用户',
+  `role` int(3) NOT NULL DEFAULT '1' COMMENT '角色2-最高管理员,1-管理员,0-普通用户',
   `birthday` date   DEFAULT NULL COMMENT '出生日期',
     PRIMARY KEY (`id`),
   UNIQUE KEY `user_name_unique` (`username`) USING BTREE
@@ -15,7 +15,7 @@ CREATE TABLE `dms_user` (
 
 /*Data for the table `dms_user` */
 insert  into `dms_user`(`id`,`username`,`password`,`email`,`role`,`birthday`) values 
-(1,'admin','21232f297a57a5a743894a0e4a801fc3','admin@dms.com',1,'1993-03-15'),
+(1,'admin','21232f297a57a5a743894a0e4a801fc3','admin@dms.com',2,'1993-03-15'),
 (2,'admin2','21232f297a57a5a743894a0e4a801fc3','admin2@dms.com',1,'1990-06-15'),
 (3,'张一','21232f297a57a5a743894a0e4a801fc3','zhang1@dms.com',0,'1997-03-24');
 

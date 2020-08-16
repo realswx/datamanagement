@@ -6,7 +6,7 @@
     <result column="username" jdbcType="VARCHAR" property="username" />
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="email" jdbcType="VARCHAR" property="email" />
-    <result column="role" jdbcType="BIT" property="role" />
+    <result column="role" jdbcType="INTEGER" property="role" />
     <result column="birthday" jdbcType="DATE" property="birthday" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -22,6 +22,15 @@
       (#{user.username}, #{user.password}, #{user.email}, #{user.role}, #{user.birthday})
     </foreach>
   </insert>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from dms_user
+    where id != #{id}
+  </select>
+
+
 
   <select id="selectByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
@@ -47,7 +56,7 @@
     insert into dms_user (id, username, password, 
       email, role, birthday)
     values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{email,jdbcType=VARCHAR}, #{role,jdbcType=BIT}, #{birthday,jdbcType=DATE})
+      #{email,jdbcType=VARCHAR}, #{role,jdbcType=INTEGER}, #{birthday,jdbcType=DATE})
   </insert>
   <insert id="insertSelective" parameterType="com.dm.pojo.User">
     insert into dms_user
@@ -85,7 +94,7 @@
         #{email,jdbcType=VARCHAR},
       </if>
       <if test="role != null">
-        #{role,jdbcType=BIT},
+        #{role,jdbcType=INTEGER},
       </if>
       <if test="birthday != null">
         #{birthday,jdbcType=DATE},
@@ -105,7 +114,7 @@
         email = #{email,jdbcType=VARCHAR},
       </if>
       <if test="role != null">
-        role = #{role,jdbcType=BIT},
+        role = #{role,jdbcType=INTEGER},
       </if>
       <if test="birthday != null">
         birthday = #{birthday,jdbcType=DATE},
@@ -118,7 +127,7 @@
     set username = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
-      role = #{role,jdbcType=BIT},
+      role = #{role,jdbcType=INTEGER},
       birthday = #{birthday,jdbcType=DATE}
     where id = #{id,jdbcType=INTEGER}
   </update>

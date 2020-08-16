@@ -35,7 +35,7 @@ public class User {
     @CsvBindByName(column = "邮箱")
     private String email;
 
-    //1-管理员，0-普通用户，也可设置成Boolean类型
+    //2-最高级管理员，1-管理员，0-普通用户
     @ExcelProperty(value = "角色", index = 3)
     @CsvBindByPosition(position = 3)
     @CsvBindByName(column = "角色")
