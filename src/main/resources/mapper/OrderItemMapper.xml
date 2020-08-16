@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dm.mapper.OrderItemMapper">
+  <resultMap id="BaseResultMap" type="com.dm.pojo.OrderItem">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="order_no" jdbcType="INTEGER" property="orderNo" />
+    <result column="buyer_id" jdbcType="INTEGER" property="buyerId" />
+    <result column="product_id" jdbcType="INTEGER" property="productId" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="unit_price" jdbcType="DECIMAL" property="unitPrice" />
+    <result column="quantity" jdbcType="INTEGER" property="quantity" />
+    <result column="total_price" jdbcType="DECIMAL" property="totalPrice" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, order_no, buyer_id, product_id, product_name, unit_price, quantity, total_price
+  </sql>
+
+  <insert id="saveBatch">
+    insert into dms_order_item (order_no, buyer_id, product_id,
+    product_name, unit_price, quantity, total_price)
+    values
+    <foreach collection="list" separator="," item="orderItem">
+      (#{orderItem.orderNo}, #{orderItem.buyerId}, #{orderItem.productId},
+       #{orderItem.productName}, #{orderItem.unitPrice}, #{orderItem.quantity},
+        #{orderItem.totalPrice})
+    </foreach>
+  </insert>
+
+
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from dms_order_item
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from dms_order_item
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.dm.pojo.OrderItem">
+    insert into dms_order_item (id, order_no, buyer_id, 
+      product_id, product_name, unit_price, 
+      quantity, total_price)
+    values (#{id,jdbcType=INTEGER}, #{orderNo,jdbcType=INTEGER}, #{buyerId,jdbcType=INTEGER}, 
+      #{productId,jdbcType=INTEGER}, #{productName,jdbcType=VARCHAR}, #{unitPrice,jdbcType=DECIMAL}, 
+      #{quantity,jdbcType=INTEGER}, #{totalPrice,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dm.pojo.OrderItem">
+    insert into dms_order_item
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="orderNo != null">
+        order_no,
+      </if>
+      <if test="buyerId != null">
+        buyer_id,
+      </if>
+      <if test="productId != null">
+        product_id,
+      </if>
+      <if test="productName != null">
+        product_name,
+      </if>
+      <if test="unitPrice != null">
+        unit_price,
+      </if>
+      <if test="quantity != null">
+        quantity,
+      </if>
+      <if test="totalPrice != null">
+        total_price,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="orderNo != null">
+        #{orderNo,jdbcType=INTEGER},
+      </if>
+      <if test="buyerId != null">
+        #{buyerId,jdbcType=INTEGER},
+      </if>
+      <if test="productId != null">
+        #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="productName != null">
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="unitPrice != null">
+        #{unitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="quantity != null">
+        #{quantity,jdbcType=INTEGER},
+      </if>
+      <if test="totalPrice != null">
+        #{totalPrice,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dm.pojo.OrderItem">
+    update dms_order_item
+    <set>
+      <if test="orderNo != null">
+        order_no = #{orderNo,jdbcType=INTEGER},
+      </if>
+      <if test="buyerId != null">
+        buyer_id = #{buyerId,jdbcType=INTEGER},
+      </if>
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="productName != null">
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="unitPrice != null">
+        unit_price = #{unitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="quantity != null">
+        quantity = #{quantity,jdbcType=INTEGER},
+      </if>
+      <if test="totalPrice != null">
+        total_price = #{totalPrice,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dm.pojo.OrderItem">
+    update dms_order_item
+    set order_no = #{orderNo,jdbcType=INTEGER},
+      buyer_id = #{buyerId,jdbcType=INTEGER},
+      product_id = #{productId,jdbcType=INTEGER},
+      product_name = #{productName,jdbcType=VARCHAR},
+      unit_price = #{unitPrice,jdbcType=DECIMAL},
+      quantity = #{quantity,jdbcType=INTEGER},
+      total_price = #{totalPrice,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
