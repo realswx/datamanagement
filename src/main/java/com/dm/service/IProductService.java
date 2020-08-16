@@ -1,7 +1,8 @@
 package com.dm.service;
 
-import com.dm.pojo.Order;
 import com.dm.pojo.Product;
+import com.dm.vo.ResponseVo;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -12,5 +13,13 @@ public interface IProductService {
      * @param productList
      */
     void saveBatch(List<Product> productList);
+
+    /**
+     * 查询商品列表
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    ResponseVo<PageInfo> list(Integer pageNum, Integer pageSize);
 
 }

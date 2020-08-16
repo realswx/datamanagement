@@ -12,6 +12,11 @@ public interface ProductMapper {
      */
     void saveBatch(List<Product> productList);
 
+    /**
+     * 查询商品列表
+     */
+    List<Product> selectAll();
+
 
 
     int deleteByPrimaryKey(Integer id);

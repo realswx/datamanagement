@@ -114,6 +114,13 @@
             <artifactId>knife4j-spring-ui</artifactId>
             <version>2.0.4</version>
         </dependency>
+        <!--pagehelper分页插件-->
+        <!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper-spring-boot-starter -->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <version>1.2.13</version>
+        </dependency>
 
         <!--对于HTML页面要添加thymeleaf的相关依赖才能正确跳转-->
         <dependency>

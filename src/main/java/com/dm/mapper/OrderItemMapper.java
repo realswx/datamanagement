@@ -13,6 +13,11 @@ public interface OrderItemMapper {
      */
     void saveBatch(List<OrderItem> orderItemList);
 
+    /**
+     * 查询订单明细列表
+     */
+    List<OrderItem> selectAll();
+
 
     int deleteByPrimaryKey(Integer id);
 

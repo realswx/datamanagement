@@ -8,14 +8,12 @@ import com.dm.pojo.Order;
 import com.dm.service.IOrderService;
 import com.dm.util.OpenCsvUtil;
 import com.dm.vo.ResponseVo;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -54,6 +52,14 @@ public class OrderController {
             }
         }
         return ResponseVo.success();
+    }
+
+
+
+    @GetMapping("/list")
+    public ResponseVo<PageInfo> list(@RequestParam(required = false, defaultValue = "1") Integer pageNum,
+                                     @RequestParam(required = false, defaultValue = "10") Integer pageSize){
+        return orderService.list(pageNum, pageSize);
     }
 
 

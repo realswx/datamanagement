@@ -16,8 +16,6 @@ public class InterceptorConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new UserLoginInterceptor())
-                //TODO 为了看文档而设置，做完后删除
-//                .addPathPatterns();
 
                 .addPathPatterns("/**") //默认拦截所有url
                 .excludePathPatterns("/error", "/user/login",
