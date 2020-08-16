@@ -271,49 +271,47 @@ success
 
 ```json
 {
-    "status": 0,
-    "data": {
-        "total": 4,
-        "list": [
-            {
-                "id": 1,
-                "orderNo": 1239901840,
-                "buyerId": 1,
-                "payment": 6999.00,
-                "createTime": "2020-03-17T16:43:58.000+0000"
-            },
-            {
-                "id": 2,
-                "orderNo": 1239901841,
-                "buyerId": 2,
-                "payment": 4299.00,
-                "createTime": "2020-06-27T16:43:58.000+0000"
-            }
-        ],
-        "pageNum": 1,
-        "pageSize": 2,
-        "size": 2,
-        "startRow": 1,
-        "endRow": 2,
-        "pages": 2,
-        "prePage": 0,
-        "nextPage": 2,
-        "isFirstPage": true,
-        "isLastPage": false,
-        "hasPreviousPage": false,
-        "hasNextPage": true,
-        "navigatePages": 8,
-        "navigatepageNums": [
-            1,
-            2
-        ],
-        "navigateFirstPage": 1,
-        "navigateLastPage": 2
-    }
+    "status": 0,
+    "data": {
+        "total": 4,
+        "list": [
+            {
+                "id": 1,
+                "orderNo": 1239901840,
+                "buyerId": 1,
+                "payment": 6999.00,
+                "createTime": "2020-03-17T16:43:58.000+0000"
+            },
+            {
+                "id": 2,
+                "orderNo": 1239901841,
+                "buyerId": 2,
+                "payment": 4299.00,
+                "createTime": "2020-06-27T16:43:58.000+0000"
+            }
+        ],
+        "pageNum": 1,
+        "pageSize": 2,
+        "size": 2,
+        "startRow": 1,
+        "endRow": 2,
+        "pages": 2,
+        "prePage": 0,
+        "nextPage": 2,
+        "isFirstPage": true,
+        "isLastPage": false,
+        "hasPreviousPage": false,
+        "hasNextPage": true,
+        "navigatePages": 8,
+        "navigatepageNums": [
+            1,
+            2
+        ],
+        "navigateFirstPage": 1,
+        "navigateLastPage": 2
+    }
 }
 ```
-
-
 
 
 
