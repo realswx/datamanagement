@@ -2,14 +2,12 @@ package com.dm.controller;
 
 
 import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.ExcelReader;
-import com.alibaba.excel.read.metadata.ReadSheet;
 import com.dm.consts.DMConst;
 import com.dm.enums.ResponseEnum;
 import com.dm.listener.ProductDataListener;
 import com.dm.pojo.Product;
 import com.dm.service.IProductService;
-import com.dm.util.OpenCsvUtil;
+import com.dm.util.csv.OpenCsvUtil;
 import com.dm.vo.ResponseVo;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -23,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 @RestController
