@@ -14,6 +14,7 @@ public enum  ResponseEnum {
     USERNAME_EXIST(12, "用户名已存在"),
     EMAIL_EXIST(13, "邮箱已存在"),
     PARAM_ERROR(14, "参数错误"),
+    INSUFFICIENT_AUTHORITY(15, "权限不足"),
     ;
 
     Integer code;

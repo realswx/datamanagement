@@ -1,6 +1,7 @@
 package com.dm.controller;
 
 import com.dm.consts.DMConst;
+import com.dm.enums.ResponseEnum;
 import com.dm.form.UserAddForm;
 import com.dm.form.UserLoginForm;
 import com.dm.pojo.User;
@@ -146,7 +147,8 @@ public class UserController {
             @ApiResponse(code=10,message="用户未登录，请先登录")
     })
     @PostMapping("/add")
-    public ResponseVo<User> add(@Valid @RequestBody UserAddForm form){
+    public ResponseVo<User> add(@Valid @RequestBody UserAddForm form,
+                                @ApiIgnore HttpSession session){
         //防止username, password, email有空值
         //编写好统一的拦截之后被简化
 //        if(bindingResult.hasErrors()){
@@ -155,7 +157,10 @@ public class UserController {
 //                    bindingResult.getFieldError().getDefaultMessage());
 //            return ResponseVo.error(PARAM_ERROR, bindingResult);
 //        }
-
+        User current_user = (User) session.getAttribute(CURRENT_USER);
+        if (current_user.getRole() < 1){
+            return ResponseVo.error(ResponseEnum.INSUFFICIENT_AUTHORITY);
+        }
         User user = new User();
         BeanUtils.copyProperties(form, user);
         return userService.add(user);
