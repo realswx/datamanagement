@@ -36,7 +36,9 @@ success
 }
 ```
 
-注：防止密码泄露，故意将密码设置为空
+##### 注：
+
+防止密码泄露，故意将密码设置为空
 
 fail
 
@@ -75,7 +77,9 @@ success
 }
 ```
 
-注：防止密码泄露，故意将密码设置为空
+##### 注：
+
+防止密码泄露，故意将密码设置为空
 
 fail
 
@@ -116,7 +120,9 @@ fail
 
 ## 4、查询用户列表
 
-注：显示除自己外的所有系统用户
+##### 注：
+
+显示除自己外的所有系统用户
 
 GET  /user/list
 
@@ -179,7 +185,64 @@ success
 }
 ```
 
-注：防止密码泄露，故意将密码设置为空
+##### 注：
+
+防止密码泄露，故意将密码设置为空
+
+## 5、添加用户
+
+##### 注：
+
+普通用户不能添加用户，添加的用户为普通用户
+
+POST  /user/add
+
+request
+
+```json
+String username;
+String password;
+String email;
+Date birthday;
+```
+
+##### 注：
+
+**birthday的形式为yyyy-MM-dd...，不是yyyy/MM/dd...**
+
+response
+
+success
+
+```json
+{
+    "status": 0,
+    "msg": "成功"
+}
+```
+
+fail
+
+```json
+{
+    "status": 15,
+    "msg": "权限不足"
+}
+```
+
+```json
+{
+    "status": 12,
+    "msg": "用户名已存在"
+}
+```
+
+```json
+{
+    "status": 13,
+    "msg": "邮箱已存在"
+}
+```
 
 
 
@@ -207,7 +270,10 @@ success
 fail
 
 ```json
-
+{
+    "status": 1,
+    "msg": "系统未获取到文件"
+}
 ```
 
 
@@ -315,7 +381,10 @@ success
 fail
 
 ```json
-
+{
+    "status": 1,
+    "msg": "系统未获取到文件"
+}
 ```
 
 
@@ -410,7 +479,10 @@ success
 fail
 
 ```json
-
+{
+    "status": 1,
+    "msg": "系统未获取到文件"
+}
 ```
 
 ## 2、查询列表

@@ -10,6 +10,9 @@ import com.dm.util.OpenCsvUtil;
 import com.dm.vo.ResponseVo;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -29,6 +32,11 @@ public class OrderItemController {
     private IOrderItemService orderItemService;
 
     // 导入文件
+    @ApiOperation(value = "import文件导入")
+    @ApiResponses({
+            @ApiResponse(code=0,message = "成功"),
+            @ApiResponse(code=1,message="系统未获取到文件！")
+    })
     @PostMapping("/import")
     public ResponseVo<OrderItem> importFile(@RequestBody MultipartFile file) {
         if (StringUtils.isEmpty(file.getName())){
@@ -55,6 +63,10 @@ public class OrderItemController {
     }
 
 
+    @ApiOperation(value = "list列表")
+    @ApiResponses({
+            @ApiResponse(code=0,message = "成功")
+    })
     @GetMapping("/list")
     public ResponseVo<PageInfo> list(@RequestParam(required = false, defaultValue = "1") Integer pageNum,
                                      @RequestParam(required = false, defaultValue = "10") Integer pageSize){

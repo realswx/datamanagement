@@ -144,7 +144,9 @@ public class UserController {
     @ApiOperation(value = "add添加用户")
     @ApiResponses({
             @ApiResponse(code=0,message = "成功"),
-            @ApiResponse(code=10,message="用户未登录，请先登录")
+            @ApiResponse(code=10,message="用户未登录，请先登录"),
+            @ApiResponse(code=12,message="用户名已存在"),
+            @ApiResponse(code=13,message="邮箱已存在")
     })
     @PostMapping("/add")
     public ResponseVo<User> add(@Valid @RequestBody UserAddForm form,
