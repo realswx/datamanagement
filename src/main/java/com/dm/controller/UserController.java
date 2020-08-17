@@ -1,6 +1,7 @@
 package com.dm.controller;
 
 import com.dm.consts.DMConst;
+import com.dm.form.UserAddForm;
 import com.dm.form.UserLoginForm;
 import com.dm.pojo.User;
 import com.dm.service.IUserService;
@@ -8,8 +9,10 @@ import com.dm.vo.ResponseVo;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -27,12 +30,7 @@ public class UserController {
 
 
 
-    @ApiOperation(value = "login登录接口")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "username", required = true),
-            @ApiImplicitParam(name = "password", required = true),
-            @ApiImplicitParam(name = "session", required = false)
-    })
+    @ApiOperation(value = "login登录")
     @ApiResponses({
             @ApiResponse(code=0,message = "成功"),
             @ApiResponse(code=11,message="用户名或密码错误")
@@ -46,7 +44,7 @@ public class UserController {
     @PostMapping("/login")
     public ResponseVo<User> login(@Valid @RequestBody UserLoginForm userLoginForm,
                                   //BindingResult bindingResult,
-                                  HttpSession session){
+                                  @ApiIgnore HttpSession session){
         //防止username, password有空值
 //        if (bindingResult.hasErrors()){
 //            //控制台上打印
@@ -72,8 +70,13 @@ public class UserController {
      * @param session
      * @return
      */
+    @ApiOperation(value = "userInfo用户信息")
+    @ApiResponses({
+            @ApiResponse(code=0,message = "成功"),
+            @ApiResponse(code=10,message="用户未登录，请先登录")
+    })
     @GetMapping("/info")
-    public ResponseVo<User> userInfo(HttpSession session){
+    public ResponseVo<User> userInfo(@ApiIgnore HttpSession session){
         log.info("/user/info sessionId={}", session.getId());
         User user = (User) session.getAttribute(CURRENT_USER);
         //已经通过拦截器判断登录状态
@@ -89,8 +92,13 @@ public class UserController {
      * @param session
      * @return
      */
+    @ApiOperation(value = "logout退出登录")
+    @ApiResponses({
+            @ApiResponse(code=0,message = "成功"),
+            @ApiResponse(code=10,message="用户未登录，请先登录")
+    })
     @PostMapping("/logout")
-    public ResponseVo<User> logout(HttpSession session){
+    public ResponseVo<User> logout(@ApiIgnore HttpSession session){
         log.info("/user/logout sessionId={}", session.getId());
         //已经通过拦截器判断登录状态
 //        User user = (User) session.getAttribute(MallConst.CURRENT_USER);
@@ -113,12 +121,44 @@ public class UserController {
      * @param session
      * @return
      */
+    @ApiOperation(value = "list查询用户信息")
+    @ApiResponses({
+            @ApiResponse(code=0,message = "成功"),
+            @ApiResponse(code=10,message="用户未登录，请先登录")
+    })
     @GetMapping("/list")
     public ResponseVo<PageInfo> list(@RequestParam(required = false, defaultValue = "1") Integer pageNum,
                                      @RequestParam(required = false, defaultValue = "10") Integer pageSize,
-                                     HttpSession session) {
+                                     @ApiIgnore HttpSession session) {
         User user = (User) session.getAttribute(CURRENT_USER);
         return userService.list(user.getId(), pageNum, pageSize);
+    }
+
+
+    /**
+     * 添加用户
+     * @param form
+     * @return
+     */
+    @ApiOperation(value = "add添加用户")
+    @ApiResponses({
+            @ApiResponse(code=0,message = "成功"),
+            @ApiResponse(code=10,message="用户未登录，请先登录")
+    })
+    @PostMapping("/add")
+    public ResponseVo<User> add(@Valid @RequestBody UserAddForm form){
+        //防止username, password, email有空值
+        //编写好统一的拦截之后被简化
+//        if(bindingResult.hasErrors()){
+//            log.error("提交的数据有误,{} {}",
+//                    Objects.requireNonNull(bindingResult.getFieldError()).getField(),
+//                    bindingResult.getFieldError().getDefaultMessage());
+//            return ResponseVo.error(PARAM_ERROR, bindingResult);
+//        }
+
+        User user = new User();
+        BeanUtils.copyProperties(form, user);
+        return userService.add(user);
     }
 
 

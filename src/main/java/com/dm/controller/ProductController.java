@@ -2,6 +2,8 @@ package com.dm.controller;
 
 
 import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.ExcelReader;
+import com.alibaba.excel.read.metadata.ReadSheet;
 import com.dm.consts.DMConst;
 import com.dm.enums.ResponseEnum;
 import com.dm.listener.ProductDataListener;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 @RestController
@@ -49,9 +52,42 @@ public class ProductController {
         } else { //导入excel文件
             try {
                 EasyExcel.read(file.getInputStream(), Product.class, new ProductDataListener(productService)).sheet().doRead();
+
             } catch (IOException e) {
                 return ResponseVo.error(ResponseEnum.ERROR, e.getMessage());
             }
+
+//            try {
+//                // 读取全部sheet
+//                // 这里需要注意 DemoDataListener的doAfterAllAnalysed 会在每个sheet读取完毕后调用一次。然后所有sheet都会往同一个DemoDataListener里面写
+//                EasyExcel.read(file.getInputStream(), Product.class, new ProductDataListener()).doReadAll();
+//            } catch (IOException e) {
+//                return ResponseVo.error(ResponseEnum.ERROR, e.getMessage());
+//            }
+//
+//            // 读取部分sheet用
+//            ExcelReader excelReader = null;
+//            try {
+//
+//                // 读取部分sheet
+//                excelReader = EasyExcel.read(file.getInputStream()).build();
+//
+//                // 这里为了简单 所以注册了 同样的head 和Listener 自己使用功能必须不同的Listener
+//                ReadSheet readSheet1 =
+//                        EasyExcel.readSheet(0).head(Product.class).registerReadListener(new ProductDataListener()).build();
+//                ReadSheet readSheet2 =
+//                        EasyExcel.readSheet(1).head(Product.class).registerReadListener(new ProductDataListener()).build();
+//                // 这里注意 一定要把sheet1 sheet2 一起传进去，不然有个问题就是03版的excel 会读取多次，浪费性能
+//                excelReader.read(readSheet1, readSheet2);
+//            } catch (IOException e) {
+//                return ResponseVo.error(ResponseEnum.ERROR, e.getMessage());
+//            } finally {
+//                if (excelReader != null) {
+//                    // 这里千万别忘记关闭，读的时候会创建临时文件，到时磁盘会崩的
+//                    excelReader.finish();
+//                }
+//            }
+
         }
         return ResponseVo.success();
     }

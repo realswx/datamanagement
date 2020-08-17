@@ -29,4 +29,12 @@ public interface IUserService {
      */
     ResponseVo<PageInfo> list(Integer id, Integer pageNum, Integer pageSize);
 
+    /**
+     * 添加用户
+     * @param user
+     * @return
+     */
+    ResponseVo<User> add(User user);
+
+
 }

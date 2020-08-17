@@ -2,6 +2,7 @@ package com.dm.service.impl;
 
 import com.dm.consts.DMConst;
 import com.dm.enums.ResponseEnum;
+import com.dm.enums.RoleEnum;
 import com.dm.mapper.UserMapper;
 import com.dm.pojo.User;
 import com.dm.service.IUserService;
@@ -18,6 +19,8 @@ import org.springframework.util.DigestUtils;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.dm.enums.ResponseEnum.*;
 
 @Service
 @Slf4j
@@ -77,11 +80,11 @@ public class UserServiceImpl implements IUserService {
         for (User user : userList) {
             UserVo userVo = new UserVo();
             if (user.getRole() == 2){
-                userVo.setRoleStr(DMConst.TOP_ADMIN);
+                userVo.setRoleStr(RoleEnum.TOP_ADMIN.getDesc());
             } else if (user.getRole() == 1){
-                userVo.setRoleStr(DMConst.ADMIN);
+                userVo.setRoleStr(RoleEnum.ADMIN.getDesc());
             } else {
-                userVo.setRoleStr(DMConst.ORD_USER);
+                userVo.setRoleStr(RoleEnum.CUSTOMER.getDesc());
             }
             BeanUtils.copyProperties(user, userVo);
             //防止密码泄露
@@ -94,6 +97,43 @@ public class UserServiceImpl implements IUserService {
         PageInfo pageInfo = new PageInfo<>(userList);
         pageInfo.setList(userVoList);
         return ResponseVo.success(pageInfo);
+
+    }
+
+
+    /**
+     * 添加用户
+     * @param user
+     * @return
+     */
+    @Override
+    public ResponseVo<User> add(User user) {
+
+        //username不能重复
+        int countByUsername = userMapper.countByUsername(user.getUsername());
+        if(countByUsername > 0){
+//            throw new RuntimeException("该名字username已添加");
+            return ResponseVo.error(USERNAME_EXIST);
+        }
+        //email不能重复
+        int countByEmail = userMapper.countByEmail(user.getEmail());
+        if(countByEmail > 0){
+//            throw new RuntimeException("该邮箱email已添加");
+            return ResponseVo.error(EMAIL_EXIST);
+        }
+
+        //设置默认角色为普通用户
+        user.setRole(RoleEnum.CUSTOMER.getCode());
+        //密码，MD5摘要算法
+        user.setPassword(DigestUtils.md5DigestAsHex(
+                user.getPassword().getBytes(StandardCharsets.UTF_8)));
+        //写入数据库
+        int resultCount = userMapper.insertSelective(user);
+        if(resultCount == 0){
+//            throw new RuntimeException("添加失败");
+            return ResponseVo.error(ERROR);
+        }
+        return ResponseVo.success();
 
     }
 }

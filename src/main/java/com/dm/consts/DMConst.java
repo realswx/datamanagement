@@ -11,8 +11,8 @@ public class DMConst {
     //在UserController
     public static final String CURRENT_USER = "currentUser";
 
-    public static final String TOP_ADMIN = "最高级管理员";
-    public static final String ADMIN = "管理员";
-    public static final String ORD_USER = "普通用户";
+//    public static final String TOP_ADMIN = "最高级管理员";
+//    public static final String ADMIN = "管理员";
+//    public static final String ORD_USER = "普通用户";
 
 }
