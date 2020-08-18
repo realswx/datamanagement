@@ -53,8 +53,12 @@
         <!--</table>-->
         <!--<table tableName="dms_user" domainObjectName="User" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false"></table>-->
         <!--<table tableName="dms_order" domainObjectName="Order" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false"></table>-->
-        <table tableName="dms_product" domainObjectName="Product" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false"></table>
-        <table tableName="dms_order_item" domainObjectName="OrderItem" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false"></table>
+        <!--<table tableName="dms_product" domainObjectName="Product" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false"></table>-->
+        <!--<table tableName="dms_order_item" domainObjectName="OrderItem" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false"></table>-->
+        <table tableName="dms_log" domainObjectName="Log" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false">
+        <columnOverride column="params" jdbcType="VARCHAR"></columnOverride>
+        <columnOverride column="exceptionDetail" jdbcType="VARCHAR"></columnOverride>
+        </table>
 
 
     </context>

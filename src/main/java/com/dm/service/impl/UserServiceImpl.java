@@ -74,6 +74,8 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public ResponseVo<PageInfo> list(Integer id, Integer pageNum, Integer pageSize) {
+        //error();
+
         PageHelper.startPage(pageNum, pageSize);
         List<User> userList = userMapper.selectAll(id);
         List<UserVo> userVoList = new ArrayList<>();
@@ -135,5 +137,12 @@ public class UserServiceImpl implements IUserService {
         }
         return ResponseVo.success();
 
+    }
+
+
+
+    //制造异常
+    private void error(){
+        throw new RuntimeException("意外错误");
     }
 }

@@ -5,6 +5,7 @@ import com.alibaba.excel.EasyExcel;
 import com.dm.consts.DMConst;
 import com.dm.enums.ResponseEnum;
 import com.dm.listener.ProductDataListener;
+import com.dm.log.annotation.Log;
 import com.dm.pojo.Product;
 import com.dm.service.IProductService;
 import com.dm.util.csv.OpenCsvUtil;
@@ -34,6 +35,7 @@ public class ProductController {
 
 
     // 导入文件
+    @Log("商品数据导入")
     @ApiOperation(value = "import文件导入")
     @ApiResponses({
             @ApiResponse(code=0,message = "成功"),
@@ -98,6 +100,7 @@ public class ProductController {
     }
 
 
+    @Log("商品列表")
     @ApiOperation(value = "list列表")
     @ApiResponses({
             @ApiResponse(code=0,message = "成功")

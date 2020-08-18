@@ -4,6 +4,7 @@ import com.dm.consts.DMConst;
 import com.dm.enums.ResponseEnum;
 import com.dm.form.UserAddForm;
 import com.dm.form.UserLoginForm;
+import com.dm.log.annotation.Log;
 import com.dm.pojo.User;
 import com.dm.service.IUserService;
 import com.dm.vo.ResponseVo;
@@ -31,6 +32,7 @@ public class UserController {
 
 
 
+    @Log("登录")
     @ApiOperation(value = "login登录")
     @ApiResponses({
             @ApiResponse(code=0,message = "成功"),
@@ -71,6 +73,7 @@ public class UserController {
      * @param session
      * @return
      */
+    @Log("查看用户信息")
     @ApiOperation(value = "userInfo用户信息")
     @ApiResponses({
             @ApiResponse(code=0,message = "成功"),
@@ -93,6 +96,7 @@ public class UserController {
      * @param session
      * @return
      */
+    @Log("登出")
     @ApiOperation(value = "logout退出登录")
     @ApiResponses({
             @ApiResponse(code=0,message = "成功"),
@@ -122,6 +126,7 @@ public class UserController {
      * @param session
      * @return
      */
+    @Log("用户列表")
     @ApiOperation(value = "list查询用户信息")
     @ApiResponses({
             @ApiResponse(code=0,message = "成功"),
