@@ -6,7 +6,7 @@ package com.dm.log.annotation.type;
 public enum LogActionType {
 
     /**
-     * 增删改查
+     * 增删改查。未用到
      */
     ADD("增加"),
     SELECT("查询"),

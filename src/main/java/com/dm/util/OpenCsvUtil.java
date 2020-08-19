@@ -1,4 +1,4 @@
-package com.dm.util.csv;
+package com.dm.util;
 
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
@@ -11,7 +11,7 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 /**
- * CSV导入导出工具类
+ * CSV导入工具类
  */
 public class OpenCsvUtil {
 
@@ -36,8 +36,9 @@ public class OpenCsvUtil {
 
         CsvToBean<T> csvToBean = new CsvToBeanBuilder<T>(in)
                 .withSeparator(',')
-                .withQuoteChar('\'')
-                .withMappingStrategy(strategy).build();
+                .withQuoteChar('\'') //引号
+                .withMappingStrategy(strategy)
+                .build();
         return csvToBean.parse();
     }
 

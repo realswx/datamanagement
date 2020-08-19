@@ -4,11 +4,8 @@ package com.dm.service.impl;
 import cn.hutool.json.JSONObject;
 import com.dm.mapper.LogMapper;
 import com.dm.pojo.Log;
-import com.dm.pojo.Product;
 import com.dm.service.ILogService;
-import com.dm.util.StringUtils;
 import com.dm.vo.LogVo;
-import com.dm.vo.ProductVo;
 import com.dm.vo.ResponseVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -39,6 +36,7 @@ public class LogServiceImpl implements ILogService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void save(String username, String browser, String ip, ProceedingJoinPoint joinPoint, Log log) {
+
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
         com.dm.log.annotation.Log aopLog = method.getAnnotation(com.dm.log.annotation.Log.class);
@@ -68,7 +66,8 @@ public class LogServiceImpl implements ILogService {
                 LogServiceImpl.log.error(e.getMessage(), e);
             }
         }
-        log.setAddress(ip); //注意，需要修改。StringUtils.getCityInfo(log.getRequestIp())
+
+        log.setAddress(ip); //注意，需要修改，通过ip查地址。StringUtil.getCityInfo(log.getRequestIp())
         log.setMethod(methodName);
         log.setUsername(username);
         log.setParams(params.toString() + " }");

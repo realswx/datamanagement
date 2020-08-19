@@ -28,6 +28,14 @@ public interface UserMapper {
      */
     int countByUsername(String username);
 
+
+    /**
+     * 查询用户名是否存在
+     * @param user
+     * @return
+     */
+    int countByUsernameAndId(User user);
+
     /**
      * 查询邮箱是否存在
      * @param email
@@ -36,11 +44,22 @@ public interface UserMapper {
     int countByEmail(String email);
 
     /**
+     * 查询邮箱是否存在
+     * @param user
+     * @return
+     */
+    int countByEmailAndId(User user);
+
+    /**
      * 添加用户
      * @param record
      * @return
      */
     int insertSelective(User record);
+
+    User selectByPrimaryKey(Integer id);
+
+
 
 
 
@@ -48,9 +67,6 @@ public interface UserMapper {
 
     int insert(User record);
 
-
-
-    User selectByPrimaryKey(Integer id);
 
     int updateByPrimaryKeySelective(User record);
 

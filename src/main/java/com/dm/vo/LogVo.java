@@ -46,6 +46,5 @@ public class LogVo {
 
     //异常详细
     private String exceptionDetail;
-    //byte[]
 
 }

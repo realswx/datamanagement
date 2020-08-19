@@ -37,12 +37,50 @@
     where username = #{username,jdbcType=VARCHAR}
   </select>
 
+  <select id="countByUsernameAndId" parameterType="com.dm.pojo.User" resultType="java.lang.Integer">
+    select
+    count(1)
+    from dms_user
+    where username = #{username,jdbcType=VARCHAR}
+    and id != #{id}
+  </select>
+
   <select id="countByEmail" parameterType="java.lang.String" resultType="java.lang.Integer">
     select
     count(1)
     from dms_user
     where email = #{email,jdbcType=VARCHAR}
   </select>
+
+  <select id="countByEmailAndId" parameterType="com.dm.pojo.User" resultType="java.lang.Integer">
+    select
+    count(1)
+    from dms_user
+    where email = #{email,jdbcType=VARCHAR}
+    and id != #{id}
+  </select>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.dm.pojo.User">
+    update dms_user
+    <set>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="role != null">
+        role = #{role,jdbcType=INTEGER},
+      </if>
+      <if test="birthday != null">
+        birthday = #{birthday,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
 
 
 
@@ -117,27 +155,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.dm.pojo.User">
-    update dms_user
-    <set>
-      <if test="username != null">
-        username = #{username,jdbcType=VARCHAR},
-      </if>
-      <if test="password != null">
-        password = #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="email != null">
-        email = #{email,jdbcType=VARCHAR},
-      </if>
-      <if test="role != null">
-        role = #{role,jdbcType=INTEGER},
-      </if>
-      <if test="birthday != null">
-        birthday = #{birthday,jdbcType=DATE},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+
   <update id="updateByPrimaryKey" parameterType="com.dm.pojo.User">
     update dms_user
     set username = #{username,jdbcType=VARCHAR},

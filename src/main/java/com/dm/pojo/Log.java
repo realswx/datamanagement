@@ -46,7 +46,7 @@ public class Log {
 
     //异常详细
     private String exceptionDetail;
-    //byte[]
+
 
     public Log(String logType, Long time) {
         this.logType = logType;

@@ -1,11 +1,10 @@
 package com.dm.log.aspect;
 
 import com.dm.consts.DMConst;
-import com.dm.enums.ResponseEnum;
 import com.dm.pojo.Log;
 import com.dm.pojo.User;
 import com.dm.service.ILogService;
-import com.dm.util.StringUtils;
+import com.dm.util.StringUtil;
 import com.dm.util.ThrowableUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -20,7 +19,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.Objects;
 
 @Component
@@ -37,6 +35,7 @@ public class LogAspect {
         this.logService = logService;
     }
 
+
     /**
      * 配置切入点
      */
@@ -44,6 +43,7 @@ public class LogAspect {
     public void logPointcut() {
         // 该方法无方法体,主要为了让同类中其他方法使用此切入点
     }
+
 
     /**
      * 配置环绕通知,使用在方法logPointcut()上注册的切入点
@@ -59,9 +59,10 @@ public class LogAspect {
         currentTime.remove();
         HttpServletRequest request = ((ServletRequestAttributes) Objects
                 .requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
-        logService.save(getUsername(), StringUtils.getBrowser(request), StringUtils.getIp(request), joinPoint, log);
+        logService.save(getUsername(), StringUtil.getBrowser(request), StringUtil.getIp(request), joinPoint, log);
         return result;
     }
+
 
     /**
      * 配置异常通知
@@ -73,18 +74,16 @@ public class LogAspect {
     public void logAfterThrowing(JoinPoint joinPoint, Throwable e) {
         Log log = new Log("ERROR",System.currentTimeMillis() - currentTime.get());
         currentTime.remove();
-        //注意，有改动!!!!!
         log.setExceptionDetail(ThrowableUtil.getStackTrace(e));
         HttpServletRequest request = ((ServletRequestAttributes) Objects
                 .requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
-        logService.save(getUsername(), StringUtils.getBrowser(request), StringUtils.getIp(request), (ProceedingJoinPoint)joinPoint, log);
+        logService.save(getUsername(), StringUtil.getBrowser(request), StringUtil.getIp(request), (ProceedingJoinPoint)joinPoint, log);
     }
 
     public String getUsername() {
         try {
             HttpServletRequest request=((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
             User user = (User) request.getSession().getAttribute(DMConst.CURRENT_USER);
-//            return SecurityUtils.getCurrentUsername();
             return user.getUsername();
         }catch (Exception e){
             return "";

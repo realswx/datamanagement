@@ -1,8 +1,9 @@
 package com.dm.service.impl;
 
-import com.dm.consts.DMConst;
 import com.dm.enums.ResponseEnum;
 import com.dm.enums.RoleEnum;
+import com.dm.form.LoginUserUpdateForm;
+import com.dm.form.UserUpdateForm;
 import com.dm.mapper.UserMapper;
 import com.dm.pojo.User;
 import com.dm.service.IUserService;
@@ -20,7 +21,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.dm.enums.ResponseEnum.*;
 
 @Service
 @Slf4j
@@ -46,7 +46,7 @@ public class UserServiceImpl implements IUserService {
      * @return
      */
     @Override
-    public ResponseVo<User> login(String username, String password) {
+    public ResponseVo<UserVo> login(String username, String password) {
         User user = userMapper.selectByUsername(username);
         if (user == null){
             //用户不存在,为了安全，返回用户名或密码错误
@@ -61,7 +61,8 @@ public class UserServiceImpl implements IUserService {
         //登录成功后将密码设置为空，防止密码加入json返回给前端
         user.setPassword("");
         //登录成功
-        return ResponseVo.success(user);
+        UserVo userVo = user2UserVo(user);
+        return ResponseVo.success(userVo);
     }
 
 
@@ -80,26 +81,15 @@ public class UserServiceImpl implements IUserService {
         List<User> userList = userMapper.selectAll(id);
         List<UserVo> userVoList = new ArrayList<>();
         for (User user : userList) {
-            UserVo userVo = new UserVo();
-            if (user.getRole() == 2){
-                userVo.setRoleStr(RoleEnum.TOP_ADMIN.getDesc());
-            } else if (user.getRole() == 1){
-                userVo.setRoleStr(RoleEnum.ADMIN.getDesc());
-            } else {
-                userVo.setRoleStr(RoleEnum.CUSTOMER.getDesc());
-            }
-            BeanUtils.copyProperties(user, userVo);
-            //防止密码泄露
-            userVo.setPassword("");
+            UserVo userVo = user2UserVo(user);
             userVoList.add(userVo);
         }
 //        log.info("userList={}", userList);
-        log.info("userVoList={}", userVoList);
+//        log.info("userVoList={}", userVoList);
 
         PageInfo pageInfo = new PageInfo<>(userList);
         pageInfo.setList(userVoList);
         return ResponseVo.success(pageInfo);
-
     }
 
 
@@ -109,19 +99,19 @@ public class UserServiceImpl implements IUserService {
      * @return
      */
     @Override
-    public ResponseVo<User> add(User user) {
+    public ResponseVo add(User user) {
 
         //username不能重复
         int countByUsername = userMapper.countByUsername(user.getUsername());
         if(countByUsername > 0){
 //            throw new RuntimeException("该名字username已添加");
-            return ResponseVo.error(USERNAME_EXIST);
+            return ResponseVo.error(ResponseEnum.USERNAME_EXIST);
         }
         //email不能重复
         int countByEmail = userMapper.countByEmail(user.getEmail());
         if(countByEmail > 0){
 //            throw new RuntimeException("该邮箱email已添加");
-            return ResponseVo.error(EMAIL_EXIST);
+            return ResponseVo.error(ResponseEnum.EMAIL_EXIST);
         }
 
         //设置默认角色为普通用户
@@ -133,13 +123,80 @@ public class UserServiceImpl implements IUserService {
         int resultCount = userMapper.insertSelective(user);
         if(resultCount == 0){
 //            throw new RuntimeException("添加失败");
-            return ResponseVo.error(ERROR);
+            return ResponseVo.error(ResponseEnum.ERROR);
         }
         return ResponseVo.success();
 
     }
 
 
+    /**
+     * 更新用户信息
+     * @param user
+     * @return
+     */
+    public ResponseVo update(User user){
+        //username不能重复
+        int countByUsername = userMapper.countByUsernameAndId(user);
+        if (countByUsername > 0){
+            return ResponseVo.error(ResponseEnum.USERNAME_EXIST);
+        }
+        int countByEmail = userMapper.countByEmailAndId(user);
+        if (countByEmail > 0){
+            return ResponseVo.error(ResponseEnum.EMAIL_EXIST);
+        }
+
+//        log.info("for.username={}", form.getUsername());
+//        log.info("username={}", user.getUsername());
+        int row = userMapper.updateByPrimaryKeySelective(user);
+        if (row == 0){
+            return ResponseVo.error(ResponseEnum.ERROR);
+        }
+        return ResponseVo.success();
+    }
+
+
+    /**
+     * 通过id查找用户
+     * @param id
+     * @return
+     */
+    @Override
+    public ResponseVo<User> findById(Integer id) {
+        User user = userMapper.selectByPrimaryKey(id);
+        return ResponseVo.success(user);
+    }
+
+
+    /**
+     * 修改用户权限
+     * @param id
+     * @param roleStr
+     * @return
+     */
+    //TODO
+    @Override
+    public ResponseVo updateRole(Integer id, String roleStr) {
+        return null;
+    }
+
+
+
+    private UserVo user2UserVo(User user){
+        UserVo userVo = new UserVo();
+        BeanUtils.copyProperties(user, userVo);
+        //防止密码泄露
+        userVo.setPassword("");
+        if (user.getRole() == 2){
+            userVo.setRoleStr(RoleEnum.TOP_ADMIN.getDesc());
+        } else if (user.getRole() == 1){
+            userVo.setRoleStr(RoleEnum.ADMIN.getDesc());
+        } else {
+            userVo.setRoleStr(RoleEnum.CUSTOMER.getDesc());
+        }
+
+        return userVo;
+    }
 
     //制造异常
     private void error(){

@@ -20,7 +20,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
          * 5.最大响应时间
          */
         registry.addMapping("/**")
-                .allowedOrigins("http://10.0.107.10:8005", "null") //Http://localhost:8080
+                .allowedOrigins("http://localhost:8005", "null")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowCredentials(true) //允许携带一些信息
                 .maxAge(3600); //最大响应时间

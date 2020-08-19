@@ -1,7 +1,10 @@
 package com.dm.service;
 
+import com.dm.form.LoginUserUpdateForm;
+import com.dm.form.UserUpdateForm;
 import com.dm.pojo.User;
 import com.dm.vo.ResponseVo;
+import com.dm.vo.UserVo;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
@@ -18,7 +21,7 @@ public interface IUserService {
     /**
      * 登录
      */
-    ResponseVo<User> login(String username, String password);
+    ResponseVo<UserVo> login(String username, String password);
 
     /**
      * 查询除登录用户外的所有系统用户
@@ -34,7 +37,36 @@ public interface IUserService {
      * @param user
      * @return
      */
-    ResponseVo<User> add(User user);
+    ResponseVo<UserVo> add(User user);
+
+
+    /**
+     * 更新用户信息
+     * @param user
+     * @return
+     */
+    ResponseVo update(User user);
+
+
+
+    /**
+     * 根据id查询用户
+     * @param id
+     * @return
+     */
+    ResponseVo<User> findById(Integer id);
+
+
+    /**
+     * 修改用户权限
+     * @param id
+     * @param roleStr
+     * @return
+     */
+    ResponseVo updateRole(Integer id, String roleStr);
+
+
+
 
 
 }
