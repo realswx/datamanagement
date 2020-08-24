@@ -170,15 +170,38 @@ public class UserServiceImpl implements IUserService {
 
     /**
      * 修改用户权限
-     * @param id
+     * @param currentUser
+     * @param updateId
      * @param roleStr
      * @return
      */
     //TODO
     @Override
-    public ResponseVo updateRole(Integer id, String roleStr) {
-        return null;
+    public ResponseVo updateRole(User currentUser, Integer updateId, String roleStr) {
+        if (currentUser.getRole()==0){
+            return ResponseVo.error(ResponseEnum.INSUFFICIENT_AUTHORITY);
+        } else if (currentUser.getRole()==1 && roleStr.equals(RoleEnum.CUSTOMER.getDesc())) {
+            return ResponseVo.error(ResponseEnum.INSUFFICIENT_AUTHORITY);
+        }
+
+        User user = new User();
+        user.setId(updateId);
+        if(roleStr.equals(RoleEnum.TOP_ADMIN.getDesc())){
+            user.setRole(2);
+        } else if (roleStr.equals(RoleEnum.ADMIN.getDesc())){
+            user.setRole(1);
+        } else {
+            user.setRole(0);
+        }
+        int row = userMapper.updateByPrimaryKeySelective(user);
+        if (row == 0){
+            return ResponseVo.error(ResponseEnum.ERROR);
+        }
+        return ResponseVo.success();
     }
+
+
+
 
 
 

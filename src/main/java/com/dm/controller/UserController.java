@@ -3,10 +3,7 @@ package com.dm.controller;
 import com.dm.consts.DMConst;
 import com.dm.enums.ResponseEnum;
 import com.dm.enums.RoleEnum;
-import com.dm.form.LoginUserUpdateForm;
-import com.dm.form.UserAddForm;
-import com.dm.form.UserLoginForm;
-import com.dm.form.UserUpdateForm;
+import com.dm.form.*;
 import com.dm.log.annotation.Log;
 import com.dm.pojo.User;
 import com.dm.service.IUserService;
@@ -247,6 +244,21 @@ public class UserController {
         return ResponseVo.success();
     }
 
+
+    @Log("修改用户角色")
+    @ApiOperation(value = "role修改用户角色")
+    @ApiResponses({
+            @ApiResponse(code=0,message = "成功"),
+            @ApiResponse(code=10,message="用户未登录，请先登录"),
+            @ApiResponse(code=15,message="权限不足")
+    })
+    @PostMapping("/role")
+    public ResponseVo updateRole(@Valid @RequestBody UserRoleUpdateForm form,
+                                 @ApiIgnore HttpSession session){
+        //当前登录用户
+        User currentUser = (User) session.getAttribute(CURRENT_USER);
+        return userService.updateRole(currentUser, form.getId(), form.getRoleStr());
+    }
 
 
 

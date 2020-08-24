@@ -57,6 +57,8 @@ public interface UserMapper {
      */
     int insertSelective(User record);
 
+    int updateByPrimaryKeySelective(User record);
+
     User selectByPrimaryKey(Integer id);
 
 
@@ -68,7 +70,7 @@ public interface UserMapper {
     int insert(User record);
 
 
-    int updateByPrimaryKeySelective(User record);
+
 
     int updateByPrimaryKey(User record);
 }

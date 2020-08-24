@@ -59,11 +59,12 @@ public interface IUserService {
 
     /**
      * 修改用户权限
-     * @param id
+     * @param currentUser
+     * @param updateId
      * @param roleStr
      * @return
      */
-    ResponseVo updateRole(Integer id, String roleStr);
+    ResponseVo updateRole(User currentUser, Integer updateId, String roleStr);
 
 
 
